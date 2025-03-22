@@ -5,7 +5,9 @@ body, html {
     height: 100%;
     overflow: hidden;
     background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-    font-family: 'Arial', sans-serif;
+    font-family: "IM Fell English SC", serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
 .hearts-container {
@@ -169,18 +171,15 @@ body, html {
     left: 50%;
     transform: translate(-50%, -50%);
     background: None;
-    padding: 20px;
     z-index: 10;
-    width: 90%;
-    max-width: 400px;
 }
 
 #cake-progress {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(2, 1fr);
-    width: 120px;
-    height: 120px;
+    width: 250px;
+    height: 250px;
     margin: 0 auto;
 }
 
