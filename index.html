@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prinsu's Birthday</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="hearts-container"></div>
+
+    <div class="middle-box">
+        <h1>Let's build Prinsu's birthday cake!</h1>
+        <div id="question-container">
+            <p id="question-text"></p>
+            <div id="options-container"></div>
+            <input type="text" id="answer-input" placeholder="Your answer..." style="display: none;">
+            <button id="submit-button">Submit</button>
+        </div>
+        <p id="feedback"></p>
+    </div>
+
+    <div class="cake-block">
+        <h2>Cake Progress</h2>
+        <div id="cake-progress">
+            <img src="icons/cake-1.png" class="cake-quarter" id="cake-1">
+            <img src="icons/cake-2.png" class="cake-quarter" id="cake-2">
+            <img src="icons/cake-3.png" class="cake-quarter" id="cake-3">
+            <img src="icons/cake-4.png" class="cake-quarter" id="cake-4">
+        </div>
+    </div>
+    <div id="child-stats-box" class="stats-box">
+        <h3 id="stats-name"></h3>
+        <p><strong>Favorite Food:</strong> <span id="stats-food"></span></p>
+        <p><strong>Strength:</strong> <span id="stats-strength"></span></p>
+        <p><strong>Weakness:</strong> <span id="stats-cuteness"></span></p>
+    </div>
+    
+    <div id="birthday-message" class="birthday-message">
+        🎉 HAPPY BIRTHDAY PRINSU! 🎂🎁
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

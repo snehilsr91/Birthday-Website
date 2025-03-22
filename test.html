@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prinsu's Birthday</title>
+</head>
+<style>
+    /* Background Styles */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    font-family: 'Arial', sans-serif;
+}
+
+.hearts-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Hearts */
+.heart {
+    position: absolute;
+    width: 50px; /* Adjust based on your image size */
+    height: 50px; /* Adjust based on your image size */
+    background-image: url('icons/heart.png'); /* Your heart image */
+    background-size: contain;
+    background-repeat: no-repeat;
+    transition: transform 0.3s ease;
+}
+
+.heart:hover {
+    transform: scale(1.5);
+}
+
+/* Gift Boxes */
+.gift-box {
+    position: absolute;
+    width: 50px; /* Adjust based on your image size */
+    height: 50px; /* Adjust based on your image size */
+    background-image: url('icons/gift.png'); /* Your gift image */
+    background-size: contain;
+    background-repeat: no-repeat;
+    transition: transform 0.3s ease;
+}
+
+.gift-box:hover {
+    transform: scale(1.5);
+}
+
+.middle-box {
+    position: absolute;
+    top: 30vh;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.95);
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+    width: 90%;
+    max-width: 400px;
+}
+
+.stats-box {
+    display: none;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    font-family: 'Arial', sans-serif;
+    z-index: 1000; /* Ensure it appears on top */
+    width: 200px;
+    text-align: left;
+}
+
+.stats-box h3 {
+    margin: 0;
+    font-size: 18px;
+    border-bottom: 1px solid white;
+    padding-bottom: 5px;
+}
+
+.stats-box p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+#options-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.option-img {
+    width: 100px;
+    height: 100px;
+    transition: transform 0.5s ease;
+    animation: tilt 1.5s infinite alternate ease-in-out;
+}
+
+@keyframes tilt {
+    0% { transform: rotate(-5deg); }
+    100% { transform: rotate(5deg); }
+}
+
+.option-img:hover {
+    transform: scale(1.5);
+    cursor: pointer;
+}
+
+/* Input Box */
+#answer-input {
+    padding: 10px;
+    font-size: 1rem;
+    border: 2px solid #ff6f61;
+    border-radius: 8px;
+    width: 80%;
+    margin-bottom: 15px;
+    outline: none;
+    display: none; /* Hidden by default */
+}
+
+/* Submit Button */
+#submit-button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: #ff6f61;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: none; /* Hidden by default */
+}
+
+#submit-button:hover {
+    background-color: #ff4a3d;
+}
+
+
+.cake-block {
+    position: absolute;
+    top: calc(30vh + 300px);
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.95);
+    padding: 20px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+    width: 90%;
+    max-width: 400px;
+}
+
+#cake-progress {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+}
+
+.cake-quarter {
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+
+@keyframes snap-away {
+    0% {
+        opacity: 1;
+        transform: scale(1) translate(0, 0);
+    }
+    50% {
+        opacity: 0.5;
+        transform: scale(1.2) translate(var(--x-offset), var(--y-offset));
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.5) translate(var(--x-offset), var(--y-offset));
+    }
+}
+
+.vanish {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-size: contain;
+    animation: snap-away 2s ease-out forwards;
+}
+
+.birthday-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.95);
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    z-index: 20;
+    font-size: 24px;
+    font-weight: bold;
+    color: #ff4f4f;
+    display: none; /* Hidden by default */
+}
+</style>
+
+<script>
+    const heartsContainer = document.querySelector('.hearts-container');
+const questionText = document.getElementById('question-text');
+const answerInput = document.getElementById('answer-input');
+const submitButton = document.getElementById('submit-button');
+const cakeQuarters = document.querySelectorAll('.cake-quarter');
+const optionsContainer = document.getElementById('options-container');
+const feedback = document.getElementById('feedback');
+const birthdayMessage = document.getElementById('birthday-message');
+
+const questions = [
+    { 
+        type: "image-choice",
+        question: "Who is Prinsu's favourite child?",
+        options: [
+            { name: "madigo", img: "picrew/madigo.png", correct: false, info: "Madigo loves to nap all day!" },
+            { name: "star", img: "picrew/star.png", correct: false, info: "Star is a little mischievous but very cuddly." },
+            { name: "puffy", img: "picrew/puffy.png", correct: true, info: "Puffy is the favorite! Loves being spoiled." }
+        ]
+    },
+    { 
+        type: "text-input",
+        question: "Name one of Prinsu's cats",
+        answers: ["walter", "arthur", "sophie", "luna", "shiro", "chopper"]
+    },
+    { 
+        type: "text-choice",
+        question: "How much does Prinsu love Heaven Official's Blessing?",
+        options: ["ALOT", "YES"]
+    },
+    { 
+        type: "scramble",
+        question: "Unscramble: ANDREW",
+        answer: "ANDREW"
+    }
+];
+
+let currentQuestionIndex = 0;
+let completedQuarters = 0;
+
+function shuffleWord(word) {
+    return word.split('').sort(() => Math.random() - 0.5).join('');
+}
+
+const childStatsBox = document.getElementById("child-stats-box");
+const statsName = document.getElementById("stats-name");
+const statsFood = document.getElementById("stats-food");
+const statsStrength = document.getElementById("stats-strength");
+const statsCuteness = document.getElementById("stats-cuteness");
+
+// Dummy stats for each child
+const childStats = {
+    "madigo": { name: "Madigo", food: "Fish", strength: "Adorable", weakness: "College Professors" },
+    "star": { name: "Star", food: "Milk", strength: "Main Character", weakness: "Lack of Sleep" },
+    "puffy": { name: "Puffy", food: "Chicken", strength: "I try..", weakness: "Obesity" }
+};
+
+// Function to show stats box
+function showChildStats(event, childName) {
+    if (childStats[childName]) {
+        const stats = childStats[childName];
+        statsName.textContent = stats.name;
+        statsFood.textContent = stats.food;
+        statsStrength.textContent = stats.strength;
+        statsCuteness.textContent = stats.weakness;
+        
+        childStatsBox.style.display = "block";
+        childStatsBox.style.left = `${event.pageX + 20}px`;
+        childStatsBox.style.top = `${event.pageY}px`;
+    }
+}
+
+// Function to hide stats box
+function hideChildStats() {
+    childStatsBox.style.display = "none";
+}
+
+// Modify displayQuestion to add hover event listeners
+function displayQuestion() {
+    optionsContainer.innerHTML = "";
+    answerInput.style.display = "none";
+    submitButton.style.display = "none";
+    feedback.textContent = "";
+
+    childStatsBox.style.display = "none"; // Hide stats when moving to next question
+
+    const currentQuestion = questions[currentQuestionIndex];
+    questionText.textContent = currentQuestion.question;
+
+    if (currentQuestion.type === "image-choice") {
+        currentQuestion.options.forEach(option => {
+            const container = document.createElement('div');
+            container.style.textAlign = "center";
+
+            const img = document.createElement('img');
+            img.src = option.img;
+            img.classList.add('option-img');
+
+            // Show stats on hover
+            img.addEventListener('mouseenter', (event) => showChildStats(event, option.name));
+            img.addEventListener('mouseleave', hideChildStats);
+
+            img.addEventListener('click', () => checkAnswer(option.correct));
+
+            const name = document.createElement('p');
+            name.textContent = option.name;
+            name.style.margin = "5px 0 0";
+            name.style.fontWeight = "bold";
+
+            container.appendChild(img);
+            container.appendChild(name);
+            optionsContainer.appendChild(container);
+        });
+    } else if (currentQuestion.type === "text-input") {
+        answerInput.style.display = "block";
+        submitButton.style.display = "block";
+
+        // Ensure the correct styles are applied
+        answerInput.classList.add("styled-input");
+        submitButton.classList.add("styled-button");
+    } else if (currentQuestion.type === "text-choice") {
+        currentQuestion.options.forEach(option => {
+            const btn = document.createElement('button');
+            btn.textContent = option;
+            btn.addEventListener('click', () => checkAnswer(option === "ALOT" || option === "YES"));
+            optionsContainer.appendChild(btn);
+        });
+    } else if (currentQuestion.type === "scramble") {
+        const scrambledWord = shuffleWord(currentQuestion.answer);
+        questionText.textContent = `Unscramble: ${scrambledWord}`;
+
+        answerInput.style.display = "block";
+        submitButton.style.display = "block";
+
+        // Ensure the correct styles are applied
+        answerInput.classList.add("styled-input");
+        submitButton.classList.add("styled-button");
+    }
+}
+
+
+
+function checkAnswer(userInput) {
+    const currentQuestion = questions[currentQuestionIndex];
+
+    if (currentQuestion.type === "scramble") {
+        const answer = answerInput.value.trim().toLowerCase();
+        if (answer === currentQuestion.answer.toLowerCase()) {
+            proceedToNext();
+        } else {
+            feedback.textContent = "Incorrect, try again!";
+        }
+    } else if (currentQuestion.type === "text-input") {
+        if (currentQuestion.answers.includes(answerInput.value.trim().toLowerCase())) {
+            proceedToNext();
+        } else {
+            feedback.textContent = "Incorrect, try again!";
+        }
+    } else if (typeof userInput === "boolean") {
+        if (userInput) {
+            proceedToNext();
+        } else {
+            feedback.textContent = "Incorrect, try again!";
+        }
+    }
+}
+
+function proceedToNext() {
+    answerInput.value = ""; // Clears input after submission
+    cakeQuarters[completedQuarters].style.opacity = 1;
+    completedQuarters++;
+    currentQuestionIndex++;
+
+    if (currentQuestionIndex < questions.length) {
+        displayQuestion();
+    } else {
+        setTimeout(() => {
+            birthdayMessage.style.display = "block"; // Show the birthday message
+            answerInput.disabled = true; // Disable input box
+            submitButton.disabled = true; // Disable submit button
+        }, 500);
+    }
+}
+
+
+
+submitButton.addEventListener('click', () => checkAnswer());
+
+displayQuestion();
+
+
+// Function to check if two icons overlap
+// Function to check if two elements overlap
+function checkCollision(el1, el2) {
+    const rect1 = el1.getBoundingClientRect();
+    const rect2 = el2.getBoundingClientRect();
+
+    return !(
+        rect1.right < rect2.left ||
+        rect1.left > rect2.right ||
+        rect1.bottom < rect2.top ||
+        rect1.top > rect2.bottom
+    );
+}
+
+// Function to check if the new icon collides with any existing ones
+function isColliding(newIcon) {
+    return icons.some(icon => checkCollision(newIcon, icon));
+}
+
+// Array to store all placed icons for collision detection
+const icons = [];
+
+// Function to create a heart
+function createHeart() {
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+
+    let xPos, yPos;
+    let attempts = 0;
+
+    do {
+        xPos = Math.random() * (window.innerWidth - 50); // Adjust for heart size
+        yPos = Math.random() * (window.innerHeight - 50);
+        heart.style.left = `${xPos}px`;
+        heart.style.top = `${yPos}px`;
+        attempts++;
+    } while (isColliding(heart) && attempts < 100);
+
+    if (attempts < 100) {
+        heartsContainer.appendChild(heart);
+        icons.push(heart);
+    }
+}
+
+// Function to create a gift box
+function createGiftBox() {
+    const giftBox = document.createElement('div');
+    giftBox.classList.add('gift-box');
+
+    let xPos, yPos;
+    let attempts = 0;
+
+    do {
+        xPos = Math.random() * (window.innerWidth - 50);
+        yPos = Math.random() * (window.innerHeight - 50);
+        giftBox.style.left = `${xPos}px`;
+        giftBox.style.top = `${yPos}px`;
+        attempts++;
+    } while (isColliding(giftBox) && attempts < 100);
+
+    if (attempts < 100) {
+        heartsContainer.appendChild(giftBox);
+        icons.push(giftBox);
+    }
+}
+
+// Function to handle screen resizing
+function adjustIconPositions() {
+    icons.forEach(icon => {
+        let newX = Math.random() * (window.innerWidth - 50);
+        let newY = Math.random() * (window.innerHeight - 50);
+        icon.style.left = `${newX}px`;
+        icon.style.top = `${newY}px`;
+    });
+}
+
+// Create a bunch of hearts and gift boxes
+for (let i = 0; i < 25; i++) {
+    createHeart();
+    createGiftBox();
+}
+
+// Adjust positions whenever the window resizes
+window.addEventListener('resize', adjustIconPositions);
+
+// Function to move icons left and right
+function animateIcons() {
+    icons.forEach(icon => {
+        let speed = Math.random() * 2 + 1; // Random speed between 1 and 3
+        let direction = Math.random() > 0.5 ? 1 : -1; // Random initial direction
+
+        setInterval(() => {
+            let currentX = parseFloat(icon.style.left);
+            let newX = currentX + direction * speed;
+
+            // If it moves out of bounds, change direction
+            if (newX <= 0 || newX >= window.innerWidth - 50) {
+                direction *= -1;
+            }
+
+            icon.style.left = `${newX}px`;
+        }, 30); // Updates position every 30ms
+    });
+}
+
+// Call the function after creating the hearts and gifts
+setTimeout(animateIcons, 500);
+
+// Function to disperse an icon on click
+function snapDisappear(element) {
+    const numPieces = 10; // Number of fragments
+    const rect = element.getBoundingClientRect();
+    
+    for (let i = 0; i < numPieces; i++) {
+        const piece = document.createElement('div');
+        piece.classList.add('vanish');
+        piece.style.backgroundImage = window.getComputedStyle(element).backgroundImage;
+        
+        // Random offsets for dispersion effect
+        const xOffset = (Math.random() - 0.5) * 100 + "px";
+        const yOffset = (Math.random() - 0.5) * 100 + "px";
+        
+        piece.style.setProperty('--x-offset', xOffset);
+        piece.style.setProperty('--y-offset', yOffset);
+        
+        piece.style.left = `${rect.left + rect.width / 2}px`;
+        piece.style.top = `${rect.top + rect.height / 2}px`;
+
+        document.body.appendChild(piece);
+        
+        // Remove after animation ends
+        setTimeout(() => piece.remove(), 1000);
+    }
+
+    element.remove(); // Remove the original element
+}
+
+// Apply effect on click for hearts and gift boxes
+document.querySelectorAll('.heart, .gift-box').forEach(icon => {
+    icon.addEventListener('click', () => snapDisappear(icon));
+});
+
+
+// Listen for Enter key inside the answer input
+answerInput.addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+        checkAnswer(); // Call the same function as the submit button
+    }
+});
+
+
+
+</script>
+<body>
+    <div class="hearts-container"></div>
+
+    <div class="middle-box">
+        <h1>Let's build Prinsu's birthday cake!</h1>
+        <div id="question-container">
+            <p id="question-text"></p>
+            <div id="options-container"></div>
+            <input type="text" id="answer-input" placeholder="Your answer..." style="display: none;">
+            <button id="submit-button">Submit</button>
+        </div>
+        <p id="feedback"></p>
+    </div>
+
+    <div class="cake-block">
+        <h2>Cake Progress</h2>
+        <div id="cake-progress">
+            <img src="icons/cake-1.png" class="cake-quarter" id="cake-1">
+            <img src="icons/cake-2.png" class="cake-quarter" id="cake-2">
+            <img src="icons/cake-3.png" class="cake-quarter" id="cake-3">
+            <img src="icons/cake-4.png" class="cake-quarter" id="cake-4">
+        </div>
+    </div>
+    <div id="child-stats-box" class="stats-box">
+        <h3 id="stats-name"></h3>
+        <p><strong>Favorite Food:</strong> <span id="stats-food"></span></p>
+        <p><strong>Strength:</strong> <span id="stats-strength"></span></p>
+        <p><strong>Weakness:</strong> <span id="stats-cuteness"></span></p>
+    </div>
+    
+    <div id="birthday-message" class="birthday-message">
+        🎉 HAPPY BIRTHDAY PRINSU! 🎂🎁
+    </div>
+</body>
+</html>
