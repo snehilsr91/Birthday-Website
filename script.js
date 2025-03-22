@@ -139,6 +139,15 @@ function displayQuestion() {
 
 
 
+function showErrorMessage() {
+    const errorMessage = document.getElementById('error-message');
+    errorMessage.style.display = 'block';
+    
+    setTimeout(() => {
+        errorMessage.style.display = 'none';
+    }, 1500);
+}
+
 function checkAnswer(userInput) {
     const currentQuestion = questions[currentQuestionIndex];
 
@@ -147,22 +156,23 @@ function checkAnswer(userInput) {
         if (answer === currentQuestion.answer.toLowerCase()) {
             proceedToNext();
         } else {
-            feedback.textContent = "Incorrect, try again!";
+            showErrorMessage();
         }
     } else if (currentQuestion.type === "text-input") {
         if (currentQuestion.answers.includes(answerInput.value.trim().toLowerCase())) {
             proceedToNext();
         } else {
-            feedback.textContent = "Incorrect, try again!";
+            showErrorMessage();
         }
     } else if (typeof userInput === "boolean") {
         if (userInput) {
             proceedToNext();
         } else {
-            feedback.textContent = "Incorrect, try again!";
+            showErrorMessage();
         }
     }
 }
+
 
 function proceedToNext() {
     answerInput.value = ""; // Clears input after submission
