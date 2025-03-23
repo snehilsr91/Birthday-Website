@@ -185,7 +185,7 @@ body, html {
 .cake-quarter {
     width: 100%;
     height: 100%;
-    opacity: 0;
+    opacity: 0.2;
     transition: opacity 0.5s ease;
 }
 
@@ -217,8 +217,8 @@ body, html {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
+    width: 0vw;
+    height: 0vh;
     background: rgba(255, 223, 186, 0.9); /* Light pastel background */
     display: flex;
     align-items: center;

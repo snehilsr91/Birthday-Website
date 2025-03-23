@@ -184,6 +184,8 @@ function proceedToNext() {
         displayQuestion();
     } else {
         setTimeout(() => {
+            birthdayMessage.style.width = "100vw";
+            birthdayMessage.style.height = "100vh";
             birthdayMessage.style.zIndex = 1000;
             birthdayMessage.style.opacity = "1";
             answerInput.disabled = true; // Disable input box
