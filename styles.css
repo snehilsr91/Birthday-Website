@@ -52,7 +52,7 @@ body, html {
     top: 30vh;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(215, 83, 107, 0.95);
     padding: 30px;
     border-radius: 20px;
     text-align: center;
@@ -94,7 +94,6 @@ body, html {
     padding: 15px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-    font-family: 'Arial', sans-serif;
     z-index: 1000; /* Ensure it appears on top */
     width: 200px;
     text-align: left;
@@ -214,19 +213,23 @@ body, html {
     animation: snap-away 2s ease-out forwards;
 }
 
-.birthday-message {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: rgba(255, 255, 255, 0.95);
-    padding: 30px;
-    border-radius: 20px;
-    text-align: center;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-    z-index: 20;
-    font-size: 24px;
+#birthday-message {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(255, 223, 186, 0.9); /* Light pastel background */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
     font-weight: bold;
-    color: #ff4f4f;
-    display: none; /* Hidden by default */
+    text-align: center;
+    color: #ff6f61;
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
 }
+
+

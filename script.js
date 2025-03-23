@@ -184,7 +184,8 @@ function proceedToNext() {
         displayQuestion();
     } else {
         setTimeout(() => {
-            birthdayMessage.style.display = "block"; // Show the birthday message
+            birthdayMessage.style.zIndex = 1000;
+            birthdayMessage.style.opacity = "1";
             answerInput.disabled = true; // Disable input box
             submitButton.disabled = true; // Disable submit button
         }, 500);
