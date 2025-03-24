@@ -145,6 +145,30 @@ body, html {
     outline: none;
     display: none; /* Hidden by default */
 }
+.text-choice-button {
+    padding: 12px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    font-family: "IM Fell English SC", serif;
+    background: linear-gradient(45deg, #ff6f61, #ff4a3d);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    margin: 10px;
+    outline: none;
+}
+
+.text-choice-button:hover {
+    background: linear-gradient(45deg, #ff4a3d, #ff2a1d);
+    transform: scale(1.05);
+}
+
+.text-choice-button:active {
+    transform: scale(0.95);
+}
 
 /* Submit Button */
 #submit-button {

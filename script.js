@@ -44,14 +44,15 @@ function shuffleWord(word) {
 const childStatsBox = document.getElementById("child-stats-box");
 const statsName = document.getElementById("stats-name");
 const statsFood = document.getElementById("stats-food");
+const statsPokemon = document.getElementById("stats-pokemon");
 const statsStrength = document.getElementById("stats-strength");
 const statsCuteness = document.getElementById("stats-cuteness");
 
 // Dummy stats for each child
 const childStats = {
-    "madigo": { name: "Madigo", food: "Fish", strength: "Adorable", weakness: "College Professors" },
-    "star": { name: "Star", food: "Milk", strength: "Main Character", weakness: "Lack of Sleep" },
-    "puffy": { name: "Puffy", food: "Chicken", strength: "I try..", weakness: "Obesity" }
+    "madigo": { name: "Madigo", pokemon: "Jigglypuff" , food: "Yangchow", strength: "Adorable", weakness: "College Professors" },
+    "star": { name: "Star", pokemon: "Greninja" , food: "Pizza", strength: "Main Character", weakness: "Lack of Sleep" },
+    "puffy": { name: "Puffy", pokemon: "Squirtle" , food: "Chicken", strength: "I try..", weakness: "Obesity" }
 };
 
 // Function to show stats box
@@ -60,6 +61,7 @@ function showChildStats(event, childName) {
         const stats = childStats[childName];
         statsName.textContent = stats.name;
         statsFood.textContent = stats.food;
+        statsPokemon.textContent = stats.pokemon;
         statsStrength.textContent = stats.strength;
         statsCuteness.textContent = stats.weakness;
         
@@ -121,6 +123,7 @@ function displayQuestion() {
         currentQuestion.options.forEach(option => {
             const btn = document.createElement('button');
             btn.textContent = option;
+            btn.classList.add('text-choice-button');  // Add new styling
             btn.addEventListener('click', () => checkAnswer(option === "ALOT" || option === "YES"));
             optionsContainer.appendChild(btn);
         });
