@@ -173,6 +173,7 @@ body, html {
 /* Submit Button */
 #submit-button {
     padding: 10px 20px;
+    font-family: "IM Fell English SC", serif;
     font-size: 1rem;
     background-color: #ff6f61;
     color: white;
